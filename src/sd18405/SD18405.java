@@ -31,8 +31,19 @@ public class SD18405 {
         }
         ArrayList<SinhVien> list = quanLySinhVien.xuatSinhVien();
 //        list.forEach(x -> System.out.println(x.toString()));
+        System.out.println("Danh sách sinh viên là : \n");
         for (SinhVien sinhVien : list) {
             System.out.println(sinhVien.toString());
+        }
+        System.out.println("Nhap ten sinh vien can tim: ");
+        String tenCanTim = sc.nextLine();
+        ArrayList<SinhVien> ketQuaTimKiem = quanLySinhVien.timKiem(tenCanTim);
+        if (ketQuaTimKiem.isEmpty()) {
+            System.out.println("Khong tim thay ket qua");
+        } else {
+            for (SinhVien sinhVien : ketQuaTimKiem) {
+                System.out.println(sinhVien.toString());
+            }
         }
     }
 

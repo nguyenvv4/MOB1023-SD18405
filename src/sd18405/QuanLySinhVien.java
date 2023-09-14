@@ -36,5 +36,15 @@ public class QuanLySinhVien {
     public ArrayList<SinhVien> xuatSinhVien(){
         return listSinhVien;
     }
+    
+    public ArrayList<SinhVien> timKiem(String tenCanTim){
+        ArrayList<SinhVien> ketQuaTimKiem = new ArrayList<>();
+        for(SinhVien sinhVien : listSinhVien){
+            if(sinhVien.getHoTen().equals(tenCanTim)){
+                ketQuaTimKiem.add(sinhVien);
+            }
+        }
+        return ketQuaTimKiem;
+    }
 
 }
