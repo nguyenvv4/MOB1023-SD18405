@@ -14,10 +14,18 @@ public class QuanLyNhanVien {
 
     ArrayList<NhanVien> listNhanVien = new ArrayList<>();
 
+    public QuanLyNhanVien() {
+        listNhanVien.add(new NhanVien("NV1", "Nguyen Van A", "Nam", "SD1232"));
+        listNhanVien.add(new NhanVien("NV2", "Nguyen Van B", "Nam", "SD1234"));
+        listNhanVien.add(new NhanVien("NV3", "Nguyen Van C", "Nữ", "SD1235"));
+    }
+
     ArrayList<NhanVien> getListNhanVien() {
-        listNhanVien.add(new NhanVien("NV1", "Nguyen Van A", "Nam", "SD1234"));
-        listNhanVien.add(new NhanVien("NV2", "Nguyen Van A", "Nam", "SD1234"));
-        listNhanVien.add(new NhanVien("NV3", "Nguyen Van A", "Nam", "SD1234"));
         return listNhanVien;
+    }
+
+    Boolean addNew(NhanVien nhanVien) {
+        listNhanVien.add(nhanVien);
+        return true;
     }
 }
