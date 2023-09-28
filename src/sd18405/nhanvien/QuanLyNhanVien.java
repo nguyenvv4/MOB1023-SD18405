@@ -28,4 +28,14 @@ public class QuanLyNhanVien {
         listNhanVien.add(nhanVien);
         return true;
     }
+
+    Boolean delete(int vitri) {
+        listNhanVien.remove(vitri);
+        return true;
+    }
+    
+    Boolean update(int vitri, NhanVien nhanVienNew){
+        listNhanVien.set(vitri, nhanVienNew);
+        return true;
+    }
 }

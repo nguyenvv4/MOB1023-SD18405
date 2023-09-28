@@ -20,13 +20,13 @@ public class NhanVienView extends javax.swing.JFrame {
 //    ArrayList<NhanVien> list = new ArrayList<>();
     DefaultTableModel defaultTableModel;
     QuanLyNhanVien quanLyNhanVien = new QuanLyNhanVien();
-
+    
     public NhanVienView() {
         initComponents();
         ArrayList<NhanVien> list = quanLyNhanVien.getListNhanVien();
         loadData(list);
     }
-
+    
     void loadData(ArrayList<NhanVien> list) {
         defaultTableModel = (DefaultTableModel) tblNhanVien.getModel();
         defaultTableModel.setRowCount(0);
@@ -62,6 +62,8 @@ public class NhanVienView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNhanVien = new javax.swing.JTable();
         btnThem = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
+        btnCapNhat = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,6 +114,20 @@ public class NhanVienView extends javax.swing.JFrame {
             }
         });
 
+        btnXoa.setText("Xoá");
+        btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnXoaMouseClicked(evt);
+            }
+        });
+
+        btnCapNhat.setText("Cập nhật");
+        btnCapNhat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCapNhatMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -135,11 +151,14 @@ public class NhanVienView extends javax.swing.JFrame {
                             .addComponent(txtHoTen)
                             .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(btnThem))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnThem)
+                            .addComponent(btnXoa)
+                            .addComponent(btnCapNhat)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,17 +175,19 @@ public class NhanVienView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                    .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXoa))
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(rdNam)
-                    .addComponent(rdNu))
+                    .addComponent(rdNu)
+                    .addComponent(btnCapNhat))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -221,6 +242,42 @@ public class NhanVienView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnThemMouseClicked
 
+    private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
+        // TODO add your handling code here:
+        // lấy vị trí cần xoá
+        int i = tblNhanVien.getSelectedRow();
+        // gọi sang quản lý nhân viên để xoá
+        Boolean check = quanLyNhanVien.delete(i);
+        // sau khi xoá thành công in thôngg báo xoá thành công
+        // và load lại data sau khi xoá
+        if (check) {
+            JOptionPane.showMessageDialog(this, "Xoa Thanh cong");
+            loadData(quanLyNhanVien.getListNhanVien());
+        }
+    }//GEN-LAST:event_btnXoaMouseClicked
+
+    private void btnCapNhatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCapNhatMouseClicked
+        // TODO add your handling code here:
+        int i = tblNhanVien.getSelectedRow();
+        //B1: Lay thong tin tren form
+        String ma = txtMaNV.getText();
+        String ten = txtHoTen.getText();
+        String lop = cboLop.getSelectedItem().toString();
+        String gioiTinh = "";
+        if (rdNam.isSelected()) {
+            gioiTinh = "Nam";
+        } else {
+            gioiTinh = "Nữ";
+        }
+        //B2 Tao doi tuong tu cac thong tin tren
+        NhanVien nhanVien = new NhanVien(ma, ten, gioiTinh, lop);
+        Boolean check = quanLyNhanVien.update(i, nhanVien);
+        if (check) {
+            JOptionPane.showMessageDialog(this, "Cap nhat thanh cong");
+            loadData(quanLyNhanVien.getListNhanVien());
+        }
+    }//GEN-LAST:event_btnCapNhatMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -257,7 +314,9 @@ public class NhanVienView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCapNhat;
     private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnXoa;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboLop;
     private javax.swing.JLabel jLabel1;
