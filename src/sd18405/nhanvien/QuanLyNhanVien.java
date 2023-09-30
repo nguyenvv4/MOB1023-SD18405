@@ -38,4 +38,14 @@ public class QuanLyNhanVien {
         listNhanVien.set(vitri, nhanVienNew);
         return true;
     }
+    
+    ArrayList<NhanVien> search(String tenCanTim){
+        ArrayList<NhanVien> listKetQua = new ArrayList<>();
+        for(NhanVien nhanVien: listNhanVien){
+            if (nhanVien.getHoTen().equals(tenCanTim)) {
+                listKetQua.add(nhanVien);
+            }
+        }
+        return listKetQua;
+    }
 }
