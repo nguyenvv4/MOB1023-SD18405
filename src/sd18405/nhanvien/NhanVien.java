@@ -4,11 +4,13 @@
  */
 package sd18405.nhanvien;
 
+import java.io.Serializable;
+
 /**
  *
  * @author nguyenvv
  */
-public class NhanVien {
+public class NhanVien implements Serializable{
 
     private String maNV;
 

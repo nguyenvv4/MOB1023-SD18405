@@ -4,7 +4,16 @@
  */
 package sd18405.nhanvien;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -65,6 +74,8 @@ public class NhanVienView extends javax.swing.JFrame {
         btnXoa = new javax.swing.JButton();
         btnCapNhat = new javax.swing.JButton();
         btnTimKiem = new javax.swing.JButton();
+        btnGhifile = new javax.swing.JButton();
+        btnDocFile = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,6 +147,20 @@ public class NhanVienView extends javax.swing.JFrame {
             }
         });
 
+        btnGhifile.setText("Ghi vào file");
+        btnGhifile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGhifileMouseClicked(evt);
+            }
+        });
+
+        btnDocFile.setText("Đọc file");
+        btnDocFile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDocFileMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,7 +191,12 @@ public class NhanVienView extends javax.swing.JFrame {
                             .addComponent(btnTimKiem)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(btnGhifile)
+                        .addGap(108, 108, 108)
+                        .addComponent(btnDocFile)))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -197,8 +227,12 @@ public class NhanVienView extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnTimKiem))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGhifile)
+                    .addComponent(btnDocFile))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
 
@@ -299,6 +333,63 @@ public class NhanVienView extends javax.swing.JFrame {
         loadData(ketQuaTimKiem);
     }//GEN-LAST:event_btnTimKiemMouseClicked
 
+    public void ghiFile() throws IOException {
+        File file = new File("data.txt");
+        if (!file.exists()) {
+
+            //Kiểm tra sự tồn tại của file
+            file.createNewFile();//Tạo mới file
+
+        }
+
+        FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+        ArrayList<NhanVien> list = quanLyNhanVien.getListNhanVien();
+        for (NhanVien nhanVien : list) {
+            oos.writeObject(nhanVien);
+        }
+        oos.close();
+        fos.close();
+    }
+    private void btnGhifileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGhifileMouseClicked
+        try {
+            // TODO add your handling code here:
+            ghiFile();
+        } catch (IOException ex) {
+            Logger.getLogger(NhanVienView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGhifileMouseClicked
+    public void docFile() throws FileNotFoundException, IOException, ClassNotFoundException {
+        File file = new File("data.txt");
+        if (!file.exists()) {//Kiểm tra sự tồn tại của file
+            System.out.println("File này không tìm thấy");
+            return;
+        }
+        // Mo file
+        FileInputStream fis = new FileInputStream(file);
+        // Doc tung dong 
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        ArrayList<NhanVien> list = new ArrayList<>();
+        while (fis.available() > 0) {
+            list.add((NhanVien) ois.readObject());
+        }
+        ois.close();
+        fis.close();
+        loadData(list);
+
+    }
+    private void btnDocFileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDocFileMouseClicked
+        try {
+            // TODO add your handling code here:
+            docFile();
+        } catch (IOException ex) {
+            Logger.getLogger(NhanVienView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(NhanVienView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnDocFileMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -336,6 +427,8 @@ public class NhanVienView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCapNhat;
+    private javax.swing.JButton btnDocFile;
+    private javax.swing.JButton btnGhifile;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnXoa;
