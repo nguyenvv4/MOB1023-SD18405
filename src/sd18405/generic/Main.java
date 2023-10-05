@@ -18,7 +18,14 @@ public class Main {
         
         QuanLySinhVien<String> quanLySinhVien = new QuanLySinhVien<>();
         quanLySinhVien.setT("xin chao");
+//        quanLySinhVien.setT(1);
         System.out.println(quanLySinhVien.getT());
+        
+        QuanLySinhVien<Integer> quanLySinhVien1 = new QuanLySinhVien<>();
+        quanLySinhVien1.setT(1);
+        
+        // Nhan vien: ID, ma, ten, GT (String)
+        // sinh vien: ID, ten, lop, dia chi (String)
     }
     
 }
